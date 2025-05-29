@@ -1,23 +1,23 @@
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const admin = require('firebase-admin');
-const { HfInference } = require('@huggingface/inference');
+import express, { json } from 'express';
+import cors from 'cors';
+import { initializeApp, credential as _credential, firestore } from 'firebase-admin';
+import { HfInference } from '@huggingface/inference';
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
 // Initialize Firebase
-const serviceAccount = require('./serviceAccountKey.json');
-admin.initializeApp({
-  credential: admin.credential.cert({
+import serviceAccount from './serviceAccountKey.json';
+initializeApp({
+  credential: _credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
   })
 });
-const db = admin.firestore();
+const db = firestore();
 
 // Initialize Hugging Face
 const hf = new HfInference(process.env.HF_TOKEN);
@@ -33,7 +33,7 @@ async function storeMessage(sessionId, role, content) {
   await messagesRef.add({
     role,
     content,
-    timestamp: admin.firestore.FieldValue.serverTimestamp()
+    timestamp: firestore.FieldValue.serverTimestamp()
   });
 }
 
