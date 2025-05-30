@@ -32,7 +32,7 @@ const Chatbot = () => {
 
     try {
       // Send to backend
-      const API_URL = "https://chatbot-backend-sz02.onrender.com";
+      const API_URL = "https://chatbot-backend-sz02.onrender.com/api/chat";
 
       const response = await axios.post(`${API_URL}/api/chat`, {
         message: input,
