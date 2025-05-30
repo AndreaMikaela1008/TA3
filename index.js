@@ -33,7 +33,7 @@ app.post("/api/chat", async (req, res) => {
     conversation.push({ role: "user", content: message });
     console.log("Using API key:", process.env.OPENROUTER_API_KEY);
     const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
+      'https://chatbot-backend-sz02.onrender.com',
       {
         model: "openai/gpt-3.5-turbo",
         messages: conversation,
